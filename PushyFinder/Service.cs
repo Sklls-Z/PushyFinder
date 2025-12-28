@@ -16,6 +16,12 @@ public class Service
     public static IClientState ClientState { get; private set; } = null!;
 
     [PluginService]
+    public static IPlayerState PlayerState { get; private set; } = null!;
+
+    [PluginService]
+    public static IObjectTable ObjectTable { get; private set; } = null!;
+
+    [PluginService]
     public static IPartyList PartyList { get; private set; } = null!;
 
     [PluginService]

@@ -71,7 +71,7 @@ public sealed class Plugin : IDalamudPlugin
     {
         if (args == "debugOnlineStatus")
         {
-            Service.ChatGui.Print($"OnlineStatus ID = {Service.ClientState.LocalPlayer!.OnlineStatus.RowId}");
+            Service.ChatGui.Print($"OnlineStatus ID = {Service.ObjectTable.LocalPlayer!.OnlineStatus.RowId}");
             return;
         }
 
