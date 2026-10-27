@@ -38,12 +38,29 @@ public class ConfigWindow : Window, IDisposable
 
     private void DrawSimplepushConfig()
     {
-        var simplepushKey = Configuration.SimplepushKey ?? "";
-        if (ImGui.InputText("Key", ref simplepushKey, 2048)) Configuration.SimplepushKey = simplepushKey;
+        var simplepushApiToken = Configuration.SimplepushApiToken ?? "";
+        if (ImGui.InputText("API token", ref simplepushApiToken, 2048, ImGuiInputTextFlags.Password))
+            Configuration.SimplepushApiToken = simplepushApiToken;
+
+        var simplepushTopic = Configuration.SimplepushTopic ?? "";
+        if (ImGui.InputText("Topic (optional)", ref simplepushTopic, 2048))
+            Configuration.SimplepushTopic = simplepushTopic;
+
+        var simplepushTopicAuthToken = Configuration.SimplepushTopicAuthToken ?? "";
+        if (ImGui.InputText("Topic auth token (optional)", ref simplepushTopicAuthToken, 2048, ImGuiInputTextFlags.Password))
+            Configuration.SimplepushTopicAuthToken = simplepushTopicAuthToken;
+
         var simplepushTitle = Configuration.SimplepushTitle ?? "";
-        if (ImGui.InputText("Title (optional)", ref simplepushTitle, 2048)) Configuration.SimplepushTitle = simplepushTitle;
-        var simplepushEvent = Configuration.SimplepushEvent ?? "";
-        if (ImGui.InputText("Event (optional)", ref simplepushEvent, 2048)) Configuration.SimplepushEvent = simplepushEvent;
+        if (ImGui.InputText("Title (optional)", ref simplepushTitle, 2048))
+            Configuration.SimplepushTitle = simplepushTitle;
+
+        ImGui.TextWrapped("Get your API token from the Simplepush app under Settings > API Token. Leave Topic empty to send to your own devices. Old keys are now topics.");
+
+        if (string.IsNullOrWhiteSpace(simplepushApiToken))
+        {
+            var orange = new Vector4(1.0f, 0.6f, 0.0f, 1.0f);
+            ImGui.TextColored(orange, "An API token is required. Simplepush no longer accepts sends with only a key.");
+        }
     }
 
     private void DrawNtfyConfig()

@@ -19,9 +19,12 @@ public class Configuration : IPluginConfiguration
     public string NtfyServer { get; set; } = "https://ntfy.sh/";
     public string NtfyTopic { get; set; } = "";
     public string NtfyToken { get; set; } = "";
-    public string SimplepushKey { get; set; } = "";
+    public string SimplepushApiToken { get; set; } = "";
+    public string SimplepushTopic { get; set; } = "";
+    public string SimplepushTopicAuthToken { get; set; } = "";
     public string SimplepushTitle { get; set; } = "";
-    public string SimplepushEvent { get; set; } = "";
+    // Retained so existing plugin configs still deserialize after the 2026 API rebuild.
+    public string SimplepushKey { get; set; } = "";
     public bool EnableForDutyPops { get; set; } = true;
     public bool IgnoreAfkStatus { get; set; } = false;
     public bool DiscordUseEmbed { get; set; } = true;
@@ -31,6 +34,19 @@ public class Configuration : IPluginConfiguration
     public void Initialize(IDalamudPluginInterface pluginInterface)
     {
         PluginInterface = pluginInterface;
+        Migrate();
+    }
+
+    private void Migrate()
+    {
+        if (Version >= 2)
+            return;
+
+        // Old Simplepush keys were migrated to topics by the app.
+        if (string.IsNullOrWhiteSpace(SimplepushTopic) && !string.IsNullOrWhiteSpace(SimplepushKey))
+            SimplepushTopic = SimplepushKey;
+
+        Version = 2;
     }
 
     public void Save()
